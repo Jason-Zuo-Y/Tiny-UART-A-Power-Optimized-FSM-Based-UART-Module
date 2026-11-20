@@ -17,6 +17,10 @@
 
 本项目基于 **MIT License** 分发。欢迎大家提交 Issue 交流改进见解或探讨设计思路。作者正在硬件设计的道路上努力探索，期待与各位交流！
 
+## 另：
+
+作者在设计RX部分时，手绘了一部分时序分析图，具体可见于[doc](./doc)目录下的两张时序图。
+
 ---
 
 # Tiny-UART: A Power-Optimized FSM-Based UART Module
@@ -38,3 +42,7 @@ The project consists of two independent sub-modules (TX and RX), each driven by 
 ## 📄 License & Contact
 
 Distributed under the **MIT License**. Contributions, issues, and discussions are highly welcomed. The author is a student actively learning digital IC design and looks forward to any feedback!
+
+## Tips:
+
+When designing the RX FSM, the author freehand sketched two STA diagrams, which can be seen at [doc](./doc).
