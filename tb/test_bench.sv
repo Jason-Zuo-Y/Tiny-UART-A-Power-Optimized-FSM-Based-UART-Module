@@ -7,7 +7,7 @@ module test_bench();
 
     localparam DIVIDE_RATIO = SYSTEM_FREQUENCY/TARGET_FREQUENCY;
 
-    //模块整体要用到的信号
+    //Signals that module would use
     logic clk_i;
     logic rst_ni;
     logic tx_en;
@@ -33,7 +33,7 @@ module test_bench();
 
     assign #clk_T clk_i = ~clk_i;
 
-    //激励信号生成
+    //generate stimulation
     initial begin
         clk_i = 1;
         rst_ni = 0;
