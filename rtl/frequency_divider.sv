@@ -4,7 +4,7 @@ module frequency_divider #(
 ) (
     input  logic clk_i,
     input  logic rst_ni,
-    input  logic clear_ni,
+    input  logic clear_ni,   //when place 0, the count will remain 0;
     output logic pulse_o
 
 );
@@ -21,7 +21,7 @@ module frequency_divider #(
         end else if(!clear_ni) begin
             divider_counter <= 0;
             pulse_o_q       <= 0;
-        end else if (divider_counter == 0) begin
+        end else if (divider_counter == 0) begin //after reset, there is an immediate 1-clock-tick width pulse
             pulse_o_q <= 1;
             divider_counter <= divider_counter + 1;
         end else if (divider_counter == Divider_Counter_Target) begin
