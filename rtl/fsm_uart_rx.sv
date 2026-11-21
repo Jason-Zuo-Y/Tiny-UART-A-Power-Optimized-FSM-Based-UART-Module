@@ -17,17 +17,17 @@ module fsm_uart_rx # (
     uart_rx_state current_state = IDLE;
     uart_rx_state next_state;
 
-    logic       double_baud_tick;
-    logic       cnt_div_ctrl      = 0;
-    logic [7:0] rx_data_q         = 8'h00;
+    logic       double_baud_tick;     //2x oversampling and center-aligned single-sampling
+    logic       cnt_div_ctrl      = 0;      //place 1 here to start the count-divider
+    logic [7:0] rx_data_q         = 8'h00;     //buff for parallel output
     logic [4:0] bit_cnt           = 5'b00000;
     logic [1:0] start_finish_cnt  = 2'b00;
-    logic       fake_start_flag   = 0;
+    logic       fake_start_flag   = 0;         //fake start marker
     logic [1:0] stop_finish_cnt   = 2'b00;
 
     frequency_divider # (
         .SYSTEM_FREQUENCY(SYSTEM_FREQUENCY),
-        .TARGET_FREQUENCY(TARGET_FREQUENCY*2)
+        .TARGET_FREQUENCY(TARGET_FREQUENCY*2)  //2x oversampling
     ) u_cnt_divider (
         .clk_i   (clk_i),
         .rst_ni  (rst_ni),
@@ -100,8 +100,8 @@ module fsm_uart_rx # (
                     fake_start_flag   <= 0;
                     stop_finish_cnt   <= 2'b00;
                     bit_cnt           <= 5'b00000;
-                    if (rx_data_in == 0) begin
-                        cnt_div_ctrl <= 1;
+                    if (rx_data_in == 0) begin        //if START bit comes, start the divider
+                        cnt_div_ctrl <= 1;            //and after at most 3 clock tick, the first pulse will be detected
                     end
                 end
 
@@ -110,9 +110,9 @@ module fsm_uart_rx # (
                 START: begin
                     if(double_baud_tick) begin
                         start_finish_cnt <= start_finish_cnt + 1;
-                        if(start_finish_cnt == 1) begin
-                            fake_start_flag <= rx_data_in;
-                        end
+                        if(start_finish_cnt == 1) begin     //here I use the trait: it watches the old value of start_finish_cnt
+                            fake_start_flag <= rx_data_in;  //so when the second pulse is detected, if condition will be true.
+                        end                                 //directly judge if it is fake start.
                     end
                 end
 
@@ -133,11 +133,11 @@ module fsm_uart_rx # (
                         bit_cnt <= 5'b00000;
                         stop_finish_cnt <= stop_finish_cnt + 1;
 
-                        if(stop_finish_cnt == 1) begin
+                        if(stop_finish_cnt == 1) begin     //judge at half baudtick to see if there is dataframe error
                             if(rx_data_in)begin
-                                rx_data_out <= rx_data_q;
+                                rx_data_out <= rx_data_q;  //no, then send the result out.
                             end else begin
-                                rx_data_out <= 0;
+                                rx_data_out <= 0;          //yes, then keep NULL(0x00)
                             end
                         end
                     end
