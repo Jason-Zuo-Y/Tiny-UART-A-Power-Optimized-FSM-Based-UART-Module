@@ -23,7 +23,7 @@ module fsm_uart_tx #(
 
     frequency_divider #(
         .SYSTEM_FREQUENCY(SYSTEM_FREQUENCY),
-        .TARGET_FREQUENCY(TARGET_FREQUENCY)
+        .TARGET_FREQUENCY(TARGET_FREQUENCY)     //1x sampling
     ) u_cnt_divider (
         .clk_i   (clk_i),
         .rst_ni  (rst_ni),
@@ -98,7 +98,7 @@ module fsm_uart_tx #(
                 IDLE: begin
                     tx_data_out_q   <= 1;
                     stop_finish_cnt <= 2'b00;
-                    if(send_en_control) begin
+                    if(send_en_control) begin     //send request comes, and load to shift register
                         tx_data <= tx_data_in;
                         cnt_div_ctrl <= 1;
                     end
@@ -126,8 +126,8 @@ module fsm_uart_tx #(
                         stop_finish_cnt <= stop_finish_cnt + 1;
                         bit_cnt         <= 0;
 
-                        if(stop_finish_cnt == 2)begin
-                            cnt_div_ctrl <= 0;
+                        if(stop_finish_cnt == 2)begin     //at least two stop bits;
+                            cnt_div_ctrl <= 0;            //if there is an back_to_back request, the stop bits may have additional several clock period.
                         end
                     end
                 end
