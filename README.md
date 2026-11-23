@@ -19,7 +19,7 @@
 
 ## 另：
 
-作者在设计RX部分时，手绘了一部分时序分析图，具体可见于[doc](./doc)目录下的两张时序图。
+作者在设计RX部分时，手绘了一部分时序逻辑分析图，具体可见于[doc](./doc)目录下的两张时序图。
 
 ---
 
@@ -45,4 +45,4 @@ Distributed under the **MIT License**. Contributions, issues, and discussions ar
 
 ## Tips:
 
-When designing the RX FSM, the author freehand sketched two STA diagrams, which can be seen at [doc](./doc).
+When designing the RX FSM, the author freehand sketched two logic analysis diagrams, which can be seen at [doc](./doc).
