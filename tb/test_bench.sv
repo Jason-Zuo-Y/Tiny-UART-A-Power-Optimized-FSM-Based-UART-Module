@@ -5,7 +5,7 @@ module test_bench();
     localparam SYSTEM_FREQUENCY   = 50_000_000;
     localparam BAUDRATE_FREQUENCY = 115_200;
 
-    localparam DIVIDE_RATIO = SYSTEM_FREQUENCY/TARGET_FREQUENCY;
+    localparam DIVIDE_RATIO = SYSTEM_FREQUENCY/BAUDRATE_FREQUENCY;
 
     //Signals that module would use
     logic clk_i;
